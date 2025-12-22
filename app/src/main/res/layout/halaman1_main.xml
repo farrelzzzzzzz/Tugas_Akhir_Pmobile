@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Momen Kecil, Rasa Besar."
+                android:textStyle="bold"
                 android:textColor="#FDCF00"
                 android:textSize="28sp"
                 android:layout_marginBottom="18dp" />
