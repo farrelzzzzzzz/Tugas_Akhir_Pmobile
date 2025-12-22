@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/lr270121526151935">
+    android:background="@drawable/bg_all">
 
     <!-- Container utama -->
     <LinearLayout
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginBottom="48dp"
-            android:background="@drawable/cr15be2e2e2"
+            android:background="@drawable/tombol"
             android:paddingVertical="11dp"
             android:paddingHorizontal="49dp"
             android:clickable="true"
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Start"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:textSize="28sp" />
         </LinearLayout>
 
