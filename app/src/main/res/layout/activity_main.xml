@@ -1,19 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:background="@drawable/lr270121526151935">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Container utama -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Judul / Logo -->
+        <TextView
+            android:id="@+id/tvLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginBottom="60dp"
+            android:text="Gambar\nLogo?"
+            android:textColor="#FFFFFF"
+            android:textSize="64sp" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="53dp"
+            android:layout_marginBottom="50dp"
+            android:text="Momen Kecil, Rasa Besar."
+            android:textColor="#FDCF00"
+            android:textSize="40sp" />
+
+        <!-- Deskripsi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="50dp">
+
+            <TextView
+                android:id="@+id/tvDesc"
+                android:layout_width="338dp"
+                android:layout_height="wrap_content"
+                android:text="Tidak semua momen perlu dibagikan ke semua orang. Bagikan momen untuk orang-orang yang benar-benar berarti."
+                android:textColor="#F5E6A1"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Spacer agar tombol tetap di bawah -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Button Start -->
+        <LinearLayout
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="48dp"
+            android:background="@drawable/cr15be2e2e2"
+            android:paddingVertical="11dp"
+            android:paddingHorizontal="49dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:textColor="#000000"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
