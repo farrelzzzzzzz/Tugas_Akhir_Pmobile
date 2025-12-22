@@ -25,14 +25,14 @@
             android:paddingHorizontal="24dp">
 
             <!-- Logo / Judul -->
-            <TextView
-                android:id="@+id/tvLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gambar\nLogo?"
-                android:textColor="#FFFFFF"
-                android:textSize="48sp"
-                android:layout_marginBottom="18dp" />
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="320dp"
+                android:layout_height="320dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/gambar_halaman1"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true" />
 
             <!-- Subtitle -->
             <TextView
