@@ -1,83 +1,86 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/bg_all">
 
-    <!-- Container utama -->
+    <!-- ================= KONTEN UTAMA ================= -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Judul / Logo -->
-        <TextView
-            android:id="@+id/tvLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:layout_marginStart="72dp"
-            android:layout_marginBottom="60dp"
-            android:text="Gambar\nLogo?"
-            android:textColor="#FFFFFF"
-            android:textSize="64sp" />
+        <!-- Spacer atas (atur posisi konten utama) -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.35" />
 
-        <!-- Subtitle -->
-        <TextView
-            android:id="@+id/tvSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="53dp"
-            android:layout_marginBottom="50dp"
-            android:text="Momen Kecil, Rasa Besar."
-            android:textColor="#FDCF00"
-            android:textSize="40sp" />
-
-        <!-- Deskripsi -->
+        <!-- Konten tengah -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="50dp">
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp">
 
+            <!-- Logo / Judul -->
+            <TextView
+                android:id="@+id/tvLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gambar\nLogo?"
+                android:textColor="#FFFFFF"
+                android:textSize="48sp"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Momen Kecil, Rasa Besar."
+                android:textColor="#FDCF00"
+                android:textSize="28sp"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Deskripsi -->
             <TextView
                 android:id="@+id/tvDesc"
-                android:layout_width="338dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tidak semua momen perlu dibagikan ke semua orang. Bagikan momen untuk orang-orang yang benar-benar berarti."
                 android:textColor="#F5E6A1"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- Spacer agar tombol tetap di bawah -->
+        <!-- Spacer bawah -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="82dp"
+            android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <!-- Button Start -->
-        <LinearLayout
-            android:id="@+id/btnStart"
+    </LinearLayout>
+
+    <!-- ================= TOMBOL START (FIXED POSITION) ================= -->
+    <LinearLayout
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/tombol"
+        android:paddingHorizontal="48dp"
+        android:paddingVertical="12dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginBottom="48dp"
-            android:background="@drawable/tombol"
-            android:clickable="true"
-            android:focusable="true"
-            android:paddingHorizontal="49dp"
-            android:paddingVertical="11dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Start"
-                android:textColor="@color/black"
-                android:textSize="28sp" />
-        </LinearLayout>
-
+            android:text="Start"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
     </LinearLayout>
-</LinearLayout>
+
+</FrameLayout>
