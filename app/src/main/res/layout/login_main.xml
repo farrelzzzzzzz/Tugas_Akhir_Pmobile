@@ -5,11 +5,7 @@
     android:background="@drawable/bg_all">
 
     <!-- Background abu-abu cahaya bulan -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@drawable/bg_moon_glow"
-        android:layout_gravity="top" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
