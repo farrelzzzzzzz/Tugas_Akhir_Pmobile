@@ -17,7 +17,7 @@ class Halaman1Activity : AppCompatActivity() {
 
         btnStart.setOnClickListener {
             // Pindah ke halaman berikutnya
-            val intent = Intent(this, Halaman2Activity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }
