@@ -1,7 +1,8 @@
 package com.tugas_akhir.myapplication
 
-import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,27 @@ class LoginActivity : AppCompatActivity() {
         val edPassword = findViewById<EditText>(R.id.edPassword)
         val btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
         val btnSignIn = findViewById<AppCompatButton>(R.id.btnSignIn)
+
+        // ===============================
+        // 🔐 FITUR HINT DINAMIS PASSWORD
+        // ===============================
+        val passwordHint = "Masukkan kata sandi anda"
+        edPassword.hint = passwordHint
+
+        edPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+                    edPassword.hint = passwordHint
+                } else {
+                    edPassword.hint = null
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        // ===============================
 
         // Tombol LOGIN
         btnLogin.setOnClickListener {
