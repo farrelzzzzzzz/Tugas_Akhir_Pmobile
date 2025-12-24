@@ -47,7 +47,7 @@
 
             <!-- Username -->
             <TextView
-                android:text="Username"
+                android:text="E-Mail"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:textSize="14sp"
@@ -57,7 +57,7 @@
 
             <EditText
                 android:id="@+id/edUsername"
-                android:hint="Masukkan kata username anda"
+                android:hint="Masukkan kata email anda"
                 android:textColor="#B4B4B4"
                 android:textColorHint="#8F8F8F"
                 android:textSize="13sp"

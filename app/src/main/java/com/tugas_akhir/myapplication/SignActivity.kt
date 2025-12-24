@@ -28,6 +28,12 @@ class SignActivity : AppCompatActivity() {
         val btnSignIn = findViewById<AppCompatButton>(R.id.btnSignIn)
         val btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
 
+        val passwordHint = "Masukkan kata sandi anda"
+        edPassword.hint = passwordHint
+        edkonPassword.hint = passwordHint
+
+
+
         btnSignIn.setOnClickListener {
             val email = edUsername.text.toString().trim()
             val password = edPassword.text.toString().trim()
