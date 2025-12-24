@@ -1,6 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_all">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- CAMERA PREVIEW -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <!-- CardView untuk rounded corner + border putih -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="324dp"
+            android:layout_height="296dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            android:background="@drawable/camera_frame_border"
+            app:cardPreventCornerOverlap="false">
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/previewCamera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToOutline="true" />
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+    <!-- OVERLAY UI -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <!-- PROFILE -->
+        <ImageView
+            android:id="@+id/btnProfile"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/icon_profile"
+            android:tint="#FFFFFF" />
+
+        <!-- CHAT -->
+        <ImageView
+            android:id="@+id/btnChat"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_chat"
+            android:tint="#FFFFFF" />
+
+        <!-- EVERYONE -->
+        <TextView
+            android:id="@+id/btnEveryone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Everyone"
+            android:textColor="#FDCF00"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/icon_everyone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" />
+
+        <!-- FRIEND LIST -->
+        <LinearLayout
+            android:id="@+id/layoutFriends"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnEveryone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_popup"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Friends"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvEmptyFriend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Belum ada teman"
+                android:textColor="#AAAAAA"
+                android:gravity="center"
+                android:layout_marginVertical="12dp" />
+        </LinearLayout>
+
+        <!-- BOTTOM CONTROLS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/btnGallery"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="40dp"
+                android:src="@drawable/icon_gallery"
+                android:tint="@android:color/white" />
+
+            <View
+                android:id="@+id/btnShutter"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/shutter_kamera" />
+
+            <ImageView
+                android:id="@+id/btnSwitch"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="40dp"
+                android:src="@drawable/icon_switch"
+                android:tint="#FFFFFF" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>
