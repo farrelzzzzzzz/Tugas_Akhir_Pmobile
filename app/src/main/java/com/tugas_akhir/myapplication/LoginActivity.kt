@@ -1,5 +1,6 @@
 package com.tugas_akhir.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -67,6 +68,9 @@ class LoginActivity : AppCompatActivity() {
         // Tombol SIGN IN
         btnSignIn.setOnClickListener {
             Toast.makeText(this, "Menu Sign In", Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this, SignActivity::class.java)
+            startActivity(intent)
 
             // Contoh pindah ke halaman register
             // startActivity(Intent(this, RegisterActivity::class.java))

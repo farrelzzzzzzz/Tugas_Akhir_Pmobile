@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_all">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Spacer atas -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Logo -->
+        <TextView
+            android:text="Gambar\nLogo?"
+            android:textColor="#FFFFFF"
+            android:textSize="56sp"
+            android:gravity="center"
+            android:layout_marginBottom="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Card Login -->
+        <LinearLayout
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_bevel_soft"
+            android:padding="22dp">
+
+            <TextView
+                android:text="SIGN-IN"
+                android:textColor="#FDCF00"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="28dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Username -->
+            <TextView
+                android:text="Username"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edUsername"
+                android:hint="Masukkan kata username anda"
+                android:textColor="#B4B4B4"
+                android:textColorHint="#8F8F8F"
+                android:textSize="13sp"
+                android:background="@drawable/bg_input"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Password -->
+            <TextView
+                android:text="Password"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="#FFFFFF"
+                app:boxBackgroundMode="none"
+                android:background="@drawable/bg_input">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:padding="1dp"
+                    android:textColor="#B4B4B4"
+                    android:textColorHint="#8F8F8F"
+                    android:textSize="13sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:text="Konfirmasi Password"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="#FFFFFF"
+                app:boxBackgroundMode="none"
+                android:background="@drawable/bg_input">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edkonPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:padding="1dp"
+                    android:textColor="#B4B4B4"
+                    android:textColorHint="#8F8F8F"
+                    android:textSize="13sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Button Sign In -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSignIn"
+                android:text="SIGN - IN"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:background="@drawable/bg_buttlog"
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+
+
+            <!-- Button Login -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLogin"
+                android:text="LOGIN"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_buttsig"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+
+
+
+        </LinearLayout>
+
+        <!-- Spacer bawah -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+</FrameLayout>
