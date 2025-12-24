@@ -30,7 +30,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_profile"
+            android:src="@drawable/icon_profile"
             android:tint="#FFFFFF"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"/>
@@ -102,11 +102,12 @@
             <!-- GALERI -->
             <ImageView
                 android:id="@+id/btnGallery"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginEnd="40dp"
-                android:src="@drawable/ic_gallery"
-                android:tint="#FFFFFF"/>
+                android:src="@drawable/icon_gallery"
+                android:tint="@color/white"
+                />
 
             <!-- SHUTTER -->
             <View
@@ -118,10 +119,10 @@
             <!-- SWITCH CAMERA -->
             <ImageView
                 android:id="@+id/btnSwitch"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="40dp"
-                android:src="@drawable/ic_switch_camera"
+                android:src="@drawable/icon_switch"
                 android:tint="#FFFFFF"/>
         </LinearLayout>
 
