@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "780563777026",
+    "firebase_url": "https://luma-aplication-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "luma-aplication",
+    "storage_bucket": "luma-aplication.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780563777026:android:6b21ed7a8a38414665491b",
+        "android_client_info": {
+          "package_name": "com.tugas_akhir.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbqoqk-IOuxhKKBR5W_FNq0_W0HOOkovc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

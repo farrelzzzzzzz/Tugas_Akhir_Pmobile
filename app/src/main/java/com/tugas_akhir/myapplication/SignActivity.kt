@@ -7,71 +7,91 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class SignActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_main)
+
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance()
 
         val edUsername = findViewById<EditText>(R.id.edUsername)
         val edPassword = findViewById<TextInputEditText>(R.id.edPassword)
         val edkonPassword = findViewById<TextInputEditText>(R.id.edkonPassword)
         val btnSignIn = findViewById<AppCompatButton>(R.id.btnSignIn)
         val btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
-        // ===============================
-        // 🔐 FITUR HINT DINAMIS PASSWORD
-        // ===============================
-        val passwordHint = "Masukkan Password anda"
-        edPassword.hint = passwordHint
-        edkonPassword.hint = passwordHint
 
-
-
-        // Tombol SIGN IN
         btnSignIn.setOnClickListener {
-            val username = edUsername.text.toString().trim()
+            val email = edUsername.text.toString().trim()
             val password = edPassword.text.toString().trim()
             val konfirmasiPassword = edkonPassword.text.toString().trim()
 
-            if (username.isEmpty()) {
-                edUsername.error = "Username tidak boleh kosong"
-                edUsername.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (password.isEmpty()) {
-                edPassword.error = "Password tidak boleh kosong"
-                edPassword.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (konfirmasiPassword.isEmpty()) {
-                edkonPassword.error = "Konfirmasi password tidak boleh kosong"
-                edkonPassword.requestFocus()
+            if (email.isEmpty() || password.isEmpty() || konfirmasiPassword.isEmpty()) {
+                Toast.makeText(this, "Semua field wajib diisi", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (password != konfirmasiPassword) {
-                edkonPassword.error = "Password tidak cocok"
-                edkonPassword.requestFocus()
+                Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // TODO: Tambahkan logika untuk menyimpan data pendaftaran (misalnya ke database)
+            // 🔐 SIGN UP FIREBASE AUTH
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
 
-            Toast.makeText(this, "Pendaftaran berhasil", Toast.LENGTH_SHORT).show()
+                        val userId = auth.currentUser!!.uid
 
-            // Kembali ke halaman Login setelah pendaftaran berhasil
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish() // Menutup SignActivity agar tidak bisa kembali dengan tombol back
+                        // Data user (TANPA password)
+                        val userMap = mapOf(
+                            "email" to email,
+                            "role" to "user"
+                        )
+
+                        // Simpan ke Realtime Database
+                        database.reference.child("users")
+                            .child(userId)
+                            .setValue(userMap)
+                            .addOnSuccessListener {
+                                Toast.makeText(
+                                    this,
+                                    "Pendaftaran berhasil",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                startActivity(
+                                    Intent(this, LoginActivity::class.java)
+                                )
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(
+                                    this,
+                                    "Gagal menyimpan data",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                    } else {
+                        Toast.makeText(
+                            this,
+                            task.exception?.message ?: "Registrasi gagal",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
         }
 
-        // Tombol LOGIN (kembali ke halaman login)
         btnLogin.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }

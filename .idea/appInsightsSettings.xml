@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.tugas_akhir.myapplication" />
+                  <option name="mobileSdkAppId" value="1:780563777026:android:6b21ed7a8a38414665491b" />
+                  <option name="projectId" value="luma-aplication" />
+                  <option name="projectNumber" value="780563777026" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
