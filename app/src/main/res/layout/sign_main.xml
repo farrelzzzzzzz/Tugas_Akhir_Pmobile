@@ -11,79 +11,84 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <!-- Spacer atas -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="10dp"
             android:layout_weight="1" />
 
+
+
         <!-- Logo -->
-        <TextView
-            android:text="Gambar\nLogo?"
-            android:textColor="#FFFFFF"
-            android:textSize="56sp"
-            android:gravity="center"
-            android:layout_marginBottom="32dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Logo Aplikasi"
+            android:scaleType="fitCenter" />
 
         <!-- Card Login -->
+
+        <!-- Spacer bawah -->
+
         <LinearLayout
             android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="@drawable/bg_card_bevel_soft"
+            android:orientation="vertical"
             android:padding="22dp">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                android:gravity="center"
                 android:text="SIGN-IN"
                 android:textColor="#FDCF00"
                 android:textSize="36sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="28dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <!-- Username -->
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
                 android:text="E-Mail"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
                 android:textSize="14sp"
-                android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_input"
                 android:hint="Masukkan kata email anda"
+                android:padding="16dp"
                 android:textColor="#B4B4B4"
                 android:textColorHint="#8F8F8F"
-                android:textSize="13sp"
-                android:background="@drawable/bg_input"
-                android:padding="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:textSize="13sp" />
 
             <!-- Password -->
             <TextView
-                android:text="Password"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="Password"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                app:endIconMode="password_toggle"
-                app:endIconTint="#FFFFFF"
+                android:background="@drawable/bg_input"
                 app:boxBackgroundMode="none"
-                android:background="@drawable/bg_input">
+                app:endIconMode="password_toggle"
+                app:endIconTint="#FFFFFF">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edPassword"
@@ -98,22 +103,22 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:text="Konfirmasi Password"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="Konfirmasi Password"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                app:endIconMode="password_toggle"
-                app:endIconTint="#FFFFFF"
+                android:background="@drawable/bg_input"
                 app:boxBackgroundMode="none"
-                android:background="@drawable/bg_input">
+                app:endIconMode="password_toggle"
+                app:endIconTint="#FFFFFF">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edkonPassword"
@@ -131,33 +136,31 @@
             <!-- Button Sign In -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSignIn"
-                android:text="SIGN - IN"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="#000000"
-                android:background="@drawable/bg_buttlog"
-                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp" />
+                android:layout_height="48dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bg_buttlog"
+                android:text="SIGN - IN"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
 
             <!-- Button Login -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnLogin"
-                android:text="LOGIN"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="#FFFFFF"
-                android:background="@drawable/bg_buttsig"
-                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp" />
-
+                android:layout_height="48dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_buttsig"
+                android:text="LOGIN"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
 
-        <!-- Spacer bawah -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"

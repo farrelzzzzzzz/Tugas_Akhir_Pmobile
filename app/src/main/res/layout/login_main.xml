@@ -18,14 +18,16 @@
             android:layout_weight="1" />
 
         <!-- Logo -->
-        <TextView
-            android:text="Gambar\nLogo?"
-            android:textColor="#FFFFFF"
-            android:textSize="56sp"
-            android:gravity="center"
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="32dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:src="@drawable/logo"
+            android:contentDescription="Logo Aplikasi"
+            android:scaleType="fitCenter" />
+
 
         <!-- Card Login -->
         <LinearLayout
