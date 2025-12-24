@@ -24,52 +24,63 @@ class SignActivity : AppCompatActivity() {
 
         val edUsername = findViewById<EditText>(R.id.edUsername)
         val edPassword = findViewById<TextInputEditText>(R.id.edPassword)
-        val edkonPassword = findViewById<TextInputEditText>(R.id.edkonPassword)
+        val edKonfirmasi = findViewById<TextInputEditText>(R.id.edkonPassword)
         val btnSignIn = findViewById<AppCompatButton>(R.id.btnSignIn)
         val btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
 
-        val passwordHint = "Masukkan kata sandi anda"
-        edPassword.hint = passwordHint
-        edkonPassword.hint = passwordHint
-
-
-
         btnSignIn.setOnClickListener {
+
             val email = edUsername.text.toString().trim()
             val password = edPassword.text.toString().trim()
-            val konfirmasiPassword = edkonPassword.text.toString().trim()
+            val konfirmasi = edKonfirmasi.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty() || konfirmasiPassword.isEmpty()) {
-                Toast.makeText(this, "Semua field wajib diisi", Toast.LENGTH_SHORT).show()
+            // ================= VALIDASI =================
+            if (email.isEmpty()) {
+                edUsername.error = "Email tidak boleh kosong"
+                edUsername.requestFocus()
                 return@setOnClickListener
             }
 
-            if (password != konfirmasiPassword) {
-                Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
+            if (password.isEmpty()) {
+                edPassword.error = "Password tidak boleh kosong"
+                edPassword.requestFocus()
                 return@setOnClickListener
             }
 
-            // 🔐 SIGN UP FIREBASE AUTH
+            if (konfirmasi.isEmpty()) {
+                edKonfirmasi.error = "Konfirmasi password kosong"
+                edKonfirmasi.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (password != konfirmasi) {
+                edKonfirmasi.error = "Password tidak cocok"
+                edKonfirmasi.requestFocus()
+                return@setOnClickListener
+            }
+
+            // ================= FIREBASE AUTH =================
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
+
                     if (task.isSuccessful) {
 
-                        val userId = auth.currentUser!!.uid
+                        val uid = auth.currentUser!!.uid
 
-                        // Data user (TANPA password)
                         val userMap = mapOf(
                             "email" to email,
                             "role" to "user"
                         )
 
-                        // Simpan ke Realtime Database
+                        // ================= SIMPAN KE DATABASE =================
                         database.reference.child("users")
-                            .child(userId)
+                            .child(uid)
                             .setValue(userMap)
                             .addOnSuccessListener {
+
                                 Toast.makeText(
                                     this,
-                                    "Pendaftaran berhasil",
+                                    "Pendaftaran berhasil, silakan login",
                                     Toast.LENGTH_SHORT
                                 ).show()
 
@@ -81,21 +92,24 @@ class SignActivity : AppCompatActivity() {
                             .addOnFailureListener {
                                 Toast.makeText(
                                     this,
-                                    "Gagal menyimpan data",
-                                    Toast.LENGTH_SHORT
+                                    "Gagal menyimpan data ke database",
+                                    Toast.LENGTH_LONG
                                 ).show()
                             }
 
                     } else {
+                        // ================= ERROR AUTH =================
+                        val errorMsg = task.exception?.localizedMessage ?: "Registrasi gagal"
                         Toast.makeText(
                             this,
-                            task.exception?.message ?: "Registrasi gagal",
+                            errorMsg,
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
         }
 
+        // ================= KE LOGIN =================
         btnLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
