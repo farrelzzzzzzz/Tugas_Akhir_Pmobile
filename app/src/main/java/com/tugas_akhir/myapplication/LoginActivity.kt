@@ -8,12 +8,17 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_main)
+
+        auth = FirebaseAuth.getInstance()
 
         val edUsername = findViewById<EditText>(R.id.edUsername)
         val edPassword = findViewById<EditText>(R.id.edPassword)
@@ -28,52 +33,57 @@ class LoginActivity : AppCompatActivity() {
 
         edPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    edPassword.hint = passwordHint
-                } else {
-                    edPassword.hint = null
-                }
+                edPassword.hint = if (s.isNullOrEmpty()) passwordHint else null
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
         // ===============================
 
-        // Tombol LOGIN
+        // 🔑 TOMBOL LOGIN (CEK KE FIREBASE)
         btnLogin.setOnClickListener {
-            val username = edUsername.text.toString().trim()
+            val email = edUsername.text.toString().trim()
             val password = edPassword.text.toString().trim()
 
-            if (username.isEmpty()) {
-                edUsername.error = "Username tidak boleh kosong"
-                edUsername.requestFocus()
+            if (email.isEmpty()) {
+                edUsername.error = "Email tidak boleh kosong"
                 return@setOnClickListener
             }
 
             if (password.isEmpty()) {
                 edPassword.error = "Password tidak boleh kosong"
-                edPassword.requestFocus()
                 return@setOnClickListener
             }
 
-            Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show()
+            // 🔐 LOGIN FIREBASE AUTH
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
 
-            // Contoh pindah ke halaman utama
-            // startActivity(Intent(this, MainActivity::class.java))
-            // finish()
+                        Toast.makeText(
+                            this,
+                            "Login berhasil",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        startActivity(
+                            Intent(this, MenuActivity::class.java)
+                        )
+                        finish()
+
+                    } else {
+                        Toast.makeText(
+                            this,
+                            task.exception?.message ?: "Login gagal",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
         }
 
-        // Tombol SIGN IN
+        // TOMBOL SIGN IN
         btnSignIn.setOnClickListener {
-            Toast.makeText(this, "Menu Sign In", Toast.LENGTH_SHORT).show()
-
-            val intent = Intent(this, SignActivity::class.java)
-            startActivity(intent)
-
-            // Contoh pindah ke halaman register
-            // startActivity(Intent(this, RegisterActivity::class.java))
+            startActivity(Intent(this, SignActivity::class.java))
         }
     }
 }
