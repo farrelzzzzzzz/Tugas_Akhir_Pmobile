@@ -13,12 +13,11 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/Luma"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/Luma"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <!-- HALAMAN PERTAMA / INTRO -->
         <activity
             android:name=".Halaman1Activity"
             android:exported="true">
@@ -28,7 +27,6 @@
             </intent-filter>
         </activity>
 
-        <!-- HALAMAN LOGIN -->
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -38,5 +36,6 @@
             android:exported="false" />
 
     </application>
+
 
 </manifest>
