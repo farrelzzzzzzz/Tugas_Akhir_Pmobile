@@ -205,6 +205,10 @@ class MenuActivity : AppCompatActivity() {
                                 "Foto tersimpan di galeri",
                                 Toast.LENGTH_SHORT
                             ).show()
+
+                            val intent = Intent(this@MenuActivity, PreviewActivity::class.java)
+                            intent.putExtra("photo_path", photoFile.absolutePath)
+                            startActivity(intent)
                         }
                     }
                 }

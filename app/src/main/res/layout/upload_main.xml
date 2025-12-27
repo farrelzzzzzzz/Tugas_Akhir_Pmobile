@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0E1B5C">
+
+    <!-- Tombol Back -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/back"
+        android:color="@color/white"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Tombol Menu -->
+    <ImageView
+        android:id="@+id/btnMenu"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/bg_menu"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Card Tengah -->
+    <LinearLayout
+        android:id="@+id/cardContainer"
+        android:layout_width="280dp"
+        android:layout_height="360dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/bg_card"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- FOTO HASIL CAMERA -->
+        <ImageView
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:background="@drawable/bg_upload"
+            android:scaleType="centerCrop"
+            android:contentDescription="Preview Foto"/>
+
+        <!-- TOMBOL UPLOAD -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpload"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/up_buttselector"
+            android:backgroundTint="@null"
+            android:text="Upload"
+            android:textSize="20dp"
+            android:textColor="#FFC107" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

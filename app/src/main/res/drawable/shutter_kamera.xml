@@ -1,27 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Lingkaran luar (ring putih) -->
+    <!-- SAAT DITEKAN -->
+    <item android:state_pressed="true">
+        <layer-list>
+
+            <!-- Lingkaran luar (lebih gelap saat ditekan) -->
+            <item>
+                <shape android:shape="oval">
+                    <size
+                        android:width="72dp"
+                        android:height="72dp"/>
+                    <solid android:color="#C9A800"/>
+                </shape>
+            </item>
+
+            <!-- Lingkaran dalam -->
+            <item
+                android:top="6dp"
+                android:bottom="6dp"
+                android:left="6dp"
+                android:right="6dp">
+                <shape android:shape="oval">
+                    <solid android:color="#E0E0E0"/>
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+
+    <!-- NORMAL -->
     <item>
-        <shape android:shape="oval">
-            <size
-                android:width="72dp"
-                android:height="72dp" />
-            <solid android:color="#FDCF00"/>
-        </shape>
+        <layer-list>
+
+            <!-- Lingkaran luar -->
+            <item>
+                <shape android:shape="oval">
+                    <size
+                        android:width="72dp"
+                        android:height="72dp"/>
+                    <solid android:color="#FDCF00"/>
+                </shape>
+            </item>
+
+            <!-- Lingkaran dalam -->
+            <item
+                android:top="6dp"
+                android:bottom="6dp"
+                android:left="6dp"
+                android:right="6dp">
+                <shape android:shape="oval">
+                    <solid android:color="#FFFFFF"/>
+                </shape>
+            </item>
+
+        </layer-list>
     </item>
 
-    <!-- Lingkaran dalam (kuning cahaya bulan) -->
-    <item
-        android:top="6dp"
-        android:bottom="6dp"
-        android:left="6dp"
-        android:right="6dp">
-
-        <shape android:shape="oval">
-            <solid android:color="#FFFFFF"/>
-        </shape>
-
-    </item>
-
-</layer-list>
+</selector>
