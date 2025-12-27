@@ -67,8 +67,15 @@ class MenuActivity : AppCompatActivity() {
 
         // CLICK LISTENER
         btnProfile.setOnClickListener {
-            Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@MenuActivity, ProfileActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(
+                android.R.anim.slide_in_left,
+                android.R.anim.slide_out_right
+            )
         }
+
+
 
         btnChat.setOnClickListener {
             Toast.makeText(this, "Chat clicked", Toast.LENGTH_SHORT).show()
