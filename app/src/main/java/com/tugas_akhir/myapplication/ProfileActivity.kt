@@ -16,6 +16,9 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvBio: TextView
     private lateinit var imgProfile: ImageView
 
+    private lateinit var btnBack: ImageView
+    private lateinit var btnBuatPostingan: android.widget.Button
+
     private lateinit var dbRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
@@ -33,12 +36,33 @@ class ProfileActivity : AppCompatActivity() {
         dbRef = FirebaseDatabase.getInstance()
             .reference.child("users").child(uid)
 
+        // INIT VIEW
         tvUsername = findViewById(R.id.tvUsername)
         tvBio = findViewById(R.id.tvBio)
         imgProfile = findViewById(R.id.imgProfile)
 
+        btnBack = findViewById(R.id.btnBack)
+        btnBuatPostingan = findViewById(R.id.btnBuatPostingan)
+
+        // EDIT PROFILE
         findViewById<LinearLayout>(R.id.btnEditProfile).setOnClickListener {
             startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+
+        // BACK KE MENU
+        btnBack.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+
+        // BUAT POSTINGAN → MENU
+        btnBuatPostingan.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
 
         loadProfile()
@@ -55,6 +79,7 @@ class ProfileActivity : AppCompatActivity() {
                 tvBio.text = snapshot.child("bio")
                     .getValue(String::class.java) ?: ""
 
+                // 🔥 AMAN UNTUK photo / photoUrl
                 val photoUrl =
                     snapshot.child("photo").getValue(String::class.java)
                         ?: snapshot.child("photoUrl").getValue(String::class.java)
@@ -77,5 +102,4 @@ class ProfileActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
-
 }

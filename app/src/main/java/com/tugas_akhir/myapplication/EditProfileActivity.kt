@@ -19,6 +19,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var btnEditPhoto: ImageView
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
+    private lateinit var btnBack: ImageView
     private lateinit var progressOverlay: FrameLayout
 
     private lateinit var etUsername: EditText
@@ -38,6 +39,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         imgProfile = findViewById(R.id.imgProfile)
         btnEditPhoto = findViewById(R.id.btnEditPhoto)
+        btnBack = findViewById(R.id.btnBack)
         btnSave = findViewById(R.id.btnSave)
         btnCancel = findViewById(R.id.btnCancel)
         progressOverlay = findViewById(R.id.progressOverlay)
@@ -46,6 +48,14 @@ class EditProfileActivity : AppCompatActivity() {
         etEmail = findViewById(R.id.etEmail)
         etPhone = findViewById(R.id.etPhone)
         etBio = findViewById(R.id.etBio)
+
+        // BACK KE MENU
+        btnBack.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
 
         btnEditPhoto.setOnClickListener { pickImage() }
         btnCancel.setOnClickListener { finish() }
@@ -58,6 +68,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun pickImage() {
         val intent = Intent(Intent.ACTION_PICK)
