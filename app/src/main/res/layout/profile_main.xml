@@ -6,11 +6,32 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_all">
 
+    <!-- GUIDELINE STATUS BAR (AMAN ANDROID 15) -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="32dp"
+        android:orientation="horizontal" />
+
+    <!-- TITLE -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PROFILE"
+        android:textColor="#FFC107"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/guidelineTop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- BACK -->
     <ImageView
         android:id="@+id/btnBack"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:src="@drawable/ic_back"
         android:tint="@android:color/white"
@@ -18,26 +39,12 @@
         app:layout_constraintBottom_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- TITLE -->
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="PROFILE"
-        android:textColor="#FFC107"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <!-- PROFILE IMAGE -->
     <ImageView
         android:id="@+id/imgProfile"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/circle_white"
         android:padding="4dp"
         android:scaleType="centerCrop"
@@ -51,10 +58,10 @@
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="14dp"
         android:text="USERNAME"
         android:textColor="#FFC107"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/imgProfile"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +87,7 @@
         android:id="@+id/btnEditProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/tvBio"
@@ -89,15 +96,15 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:text="Edit Profile"
             android:textColor="#FFC107"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="6dp"
             android:src="@drawable/ic_edit" />
     </LinearLayout>
 
@@ -105,33 +112,33 @@
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:layout_marginTop="28dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="20dp"
         android:background="#80FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/btnEditProfile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- ILUSTRASI / VEKTOR -->
+    <!-- ILUSTRASI -->
     <ImageView
         android:id="@+id/imgPostingan"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
         android:scaleType="fitCenter"
         android:src="@drawable/img_postingan"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- BUTTON BUAT POSTINGAN (DI BAWAH VEKTOR) -->
+    <!-- BUTTON -->
     <Button
         android:id="@+id/btnBuatPostingan"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
         android:text="+  Buat Postingan"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:backgroundTint="#FFFFFF"
         android:textColor="#5A2D82"

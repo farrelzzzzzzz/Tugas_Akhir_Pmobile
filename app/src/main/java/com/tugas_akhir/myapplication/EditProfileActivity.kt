@@ -2,7 +2,6 @@ package com.tugas_akhir.myapplication
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -12,34 +11,51 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import id.zelory.compressor.Compressor
-import java.io.File
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imgProfile: ImageView
+    private lateinit var btnEditPhoto: ImageView
     private lateinit var btnSave: Button
-    private lateinit var progressUpload: ProgressBar
+    private lateinit var btnCancel: Button
+    private lateinit var progressOverlay: FrameLayout
+
+    private lateinit var etUsername: EditText
+    private lateinit var etEmail: EditText
+    private lateinit var etPhone: EditText
+    private lateinit var etBio: EditText
 
     private var imageUri: Uri? = null
-    private val PICK_IMAGE = 1001
+    private val PICK_IMAGE = 101
+
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_profile_main)
 
         imgProfile = findViewById(R.id.imgProfile)
+        btnEditPhoto = findViewById(R.id.btnEditPhoto)
         btnSave = findViewById(R.id.btnSave)
-        progressUpload = findViewById(R.id.progressUpload)
+        btnCancel = findViewById(R.id.btnCancel)
+        progressOverlay = findViewById(R.id.progressOverlay)
 
-        findViewById<ImageView>(R.id.btnEditPhoto).setOnClickListener {
-            pickImage()
-        }
+        etUsername = findViewById(R.id.etUsername)
+        etEmail = findViewById(R.id.etEmail)
+        etPhone = findViewById(R.id.etPhone)
+        etBio = findViewById(R.id.etBio)
+
+        btnEditPhoto.setOnClickListener { pickImage() }
+        btnCancel.setOnClickListener { finish() }
 
         btnSave.setOnClickListener {
-            saveProfile()
+            if (imageUri != null) {
+                uploadImageToCloudinary()
+            } else {
+                saveProfile(null)
+            }
         }
     }
 
@@ -57,89 +73,60 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveProfile() {
-        progressUpload.visibility = View.VISIBLE
-        btnSave.isEnabled = false
+    private fun uploadImageToCloudinary() {
+        progressOverlay.visibility = View.VISIBLE
 
-        val userId = FirebaseAuth.getInstance().currentUser!!.uid
-        val dbRef = FirebaseDatabase.getInstance()
-            .getReference("users")
-            .child(userId)
+        MediaManager.get()
+            .upload(imageUri)
+            .option("folder", "profile_images")
+            .callback(object : UploadCallback {
 
-        uploadImageIfNeeded(dbRef)
-    }
+                override fun onStart(requestId: String?) {}
 
-    private fun uploadImageIfNeeded(dbRef: DatabaseReference) {
-        if (imageUri == null) {
-            progressUpload.visibility = View.GONE
-            finish()
-            return
-        }
+                override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {}
 
-        Thread {
-            try {
-                // Ambil file sementara dari Uri
-                val inputStream = contentResolver.openInputStream(imageUri!!)
-                val tempFile = File(cacheDir, "temp.jpg")
-                inputStream?.use { file -> tempFile.outputStream().use { file.copyTo(it) } }
-
-                // Kompres gambar
-                val compressedFile = Compressor.compress(this, tempFile) {
-                    defaultConfig {
-                        quality = 60
-                        format(Bitmap.CompressFormat.JPEG)
-                    }
+                override fun onSuccess(requestId: String?, resultData: Map<*, *>?) {
+                    val imageUrl = resultData?.get("secure_url").toString()
+                    saveProfile(imageUrl)
                 }
 
-                runOnUiThread {
-                    // Upload ke Cloudinary
-                    MediaManager.get().upload(compressedFile)
-                        .param("folder", "profile_images")
-                        .callback(object : UploadCallback {
-                            override fun onSuccess(
-                                requestId: String?,
-                                resultData: Map<*, *>?
-                            ) {
-                                val url = resultData?.get("secure_url").toString()
-                                dbRef.child("photoUrl").setValue(url)
-
-                                progressUpload.visibility = View.GONE
-                                btnSave.isEnabled = true
-                                Toast.makeText(
-                                    this@EditProfileActivity,
-                                    "Profil berhasil disimpan",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                finish()
-                            }
-
-                            override fun onError(requestId: String?, error: ErrorInfo?) {
-                                progressUpload.visibility = View.GONE
-                                btnSave.isEnabled = true
-                                Toast.makeText(
-                                    this@EditProfileActivity,
-                                    "Upload gagal: ${error?.description}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-                            override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {}
-                            override fun onReschedule(requestId: String?, error: ErrorInfo?) {}
-                            override fun onStart(requestId: String?) {}
-                        })
-                        .dispatch()
-                }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    progressUpload.visibility = View.GONE
-                    btnSave.isEnabled = true
+                override fun onError(requestId: String?, error: ErrorInfo?) {
+                    progressOverlay.visibility = View.GONE
                     Toast.makeText(
                         this@EditProfileActivity,
-                        "Gagal memproses gambar: ${e.message}",
+                        error?.description ?: "Upload gagal",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
+                override fun onReschedule(requestId: String?, error: ErrorInfo?) {}
+            })
+            .dispatch()
+    }
+
+    private fun saveProfile(photoUrl: String?) {
+        val uid = auth.currentUser?.uid ?: return
+
+        val userData = hashMapOf(
+            "username" to etUsername.text.toString(),
+            "email" to etEmail.text.toString(),
+            "phone" to etPhone.text.toString(),
+            "bio" to etBio.text.toString()
+        )
+
+        if (photoUrl != null) {
+            userData["photoUrl"] = photoUrl
+        }
+
+        db.child("users").child(uid).updateChildren(userData as Map<String, Any>)
+            .addOnSuccessListener {
+                progressOverlay.visibility = View.GONE
+                Toast.makeText(this, "Profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
+                finish()
             }
-        }.start()
+            .addOnFailureListener {
+                progressOverlay.visibility = View.GONE
+                Toast.makeText(this, "Gagal menyimpan data", Toast.LENGTH_SHORT).show()
+            }
     }
 }

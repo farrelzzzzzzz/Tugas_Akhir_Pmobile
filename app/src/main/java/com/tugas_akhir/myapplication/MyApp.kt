@@ -8,12 +8,13 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val config = mapOf(
-            "database foto Luma" to "ISI_CLOUD_NAME_KAMU",
-            "257185352519847" to "ISI_API_KEY_KAMU",
-            "acSp051H-Lsy9qfpzkriI3cmeV4" to "ISI_API_SECRET_KAMU"
+        val cloudinaryConfig = hashMapOf(
+            "cloud_name" to "dl1rz7bop", // ⬅️ TANPA SPASI (sesuai dashboard)
+            "api_key" to "257185352519847",
+            "api_secret" to "acSp051H-Lsy9qfpzkriI3cmeV4",
+            "secure" to true
         )
 
-        MediaManager.init(this, config)
+        MediaManager.init(this, cloudinaryConfig)
     }
 }
