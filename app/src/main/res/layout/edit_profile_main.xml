@@ -13,13 +13,14 @@
         android:paddingEnd="20dp"
         android:paddingBottom="24dp">
 
-        <!-- GUIDELINE -->
+        <!-- SAFE AREA STATUS BAR (ANDROID 13–15 AMAN) -->
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="32dp" />
+
 
         <!-- BACK -->
         <ImageView
@@ -54,22 +55,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/default_profile"
                 android:scaleType="centerCrop"
-                android:background="@drawable/circle_white" />
+                app:civ_border_width="3dp"
+                app:civ_border_color="#FFFFFF" />
 
             <ImageView
                 android:id="@+id/btnEditPhoto"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="6dp"
+                android:background="@drawable/ic_edit"
+                android:padding="8dp"
                 android:src="@drawable/ic_edit"
-                android:padding="6dp" />
+                />
         </FrameLayout>
 
         <!-- USERNAME -->
@@ -142,7 +146,7 @@
             android:id="@+id/etPhone"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:hint="Contoh: 081234567890"
+            android:hint="081234567890"
             android:inputType="phone"
             android:textColor="#FFFFFF"
             android:textColorHint="#80FFFFFF"
@@ -207,7 +211,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- PROGRESS OVERLAY (FIXED) -->
+        <!-- PROGRESS OVERLAY -->
         <FrameLayout
             android:id="@+id/progressOverlay"
             android:layout_width="0dp"
@@ -242,9 +246,7 @@
                     android:textColor="#FFFFFF"
                     android:textStyle="bold" />
             </LinearLayout>
-
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
