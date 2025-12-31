@@ -51,7 +51,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         // BACK KE MENU
         btnBack.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
+            val intent = Intent(this, ProfileActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             finish()

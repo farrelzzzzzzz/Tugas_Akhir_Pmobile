@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- STORAGE -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -15,13 +18,14 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        tools:replace="android:fullBackupContent"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/Luma"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <!-- 🚀 ACTIVITY LAUNCHER (WAJIB exported=true) -->
+        <!-- 🚀 ACTIVITY LAUNCHER -->
         <activity
             android:name=".Halaman1Activity"
             android:exported="true">
@@ -43,24 +47,25 @@
             android:name=".SignActivity"
             android:exported="false" />
 
-        <!-- menu -->
-
+        <!-- MENU -->
         <activity
             android:name=".MenuActivity"
             android:exported="false" />
 
+        <!-- PREVIEW UPLOAD -->
         <activity
             android:name=".PreviewActivity"
             android:exported="false" />
 
+        <!-- PROFILE -->
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
 
+        <!-- EDIT PROFILE -->
         <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
-
 
     </application>
 

@@ -7,9 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -19,7 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.media.MediaScannerConnection
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.io.File
@@ -55,16 +52,12 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.menu_main)
 
-        // CEK USER LOGIN
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            Toast.makeText(this, "Silakan login terlebih dahulu", Toast.LENGTH_SHORT).show()
+        if (FirebaseAuth.getInstance().currentUser == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
             return
         }
 
-        // INIT VIEW
         previewCamera = findViewById(R.id.previewCamera)
         btnProfile = findViewById(R.id.btnProfile)
         btnChat = findViewById(R.id.btnChat)
@@ -76,7 +69,6 @@ class MenuActivity : AppCompatActivity() {
         layoutFriends = findViewById(R.id.layoutFriends)
         tvEmptyFriend = findViewById(R.id.tvEmptyFriend)
 
-        // Setup RecyclerView untuk list user
         rvUsers.layoutManager = LinearLayoutManager(this)
         userAdapter = AdapterRecyclerView(userList)
         rvUsers.adapter = userAdapter
@@ -88,14 +80,9 @@ class MenuActivity : AppCompatActivity() {
 
         if (hasCameraPermission()) startCamera() else requestCameraPermission()
 
-        // LISTENER BUTTON
         btnProfile.setOnClickListener {
-            val intent = Intent(this@MenuActivity, ProfileActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
-
-        btnChat.setOnClickListener { Toast.makeText(this, "Chat clicked", Toast.LENGTH_SHORT).show() }
 
         btnGallery.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -104,24 +91,22 @@ class MenuActivity : AppCompatActivity() {
         }
 
         btnSwitch.setOnClickListener {
-            lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK)
-                CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK
+            lensFacing =
+                if (lensFacing == CameraSelector.LENS_FACING_BACK)
+                    CameraSelector.LENS_FACING_FRONT
+                else
+                    CameraSelector.LENS_FACING_BACK
             startCamera()
         }
 
         btnShutter.setOnClickListener { takePhoto() }
 
-        // Toggle tampilkan list user di kotak border
         btnEveryone.setOnClickListener {
             if (userList.isNotEmpty()) {
-                if (layoutFriends.visibility == View.GONE) {
-                    layoutFriends.visibility = View.VISIBLE
-                    rvUsers.visibility = View.VISIBLE
-                    tvEmptyFriend.visibility = View.GONE
-                } else {
-                    layoutFriends.visibility = View.GONE
-                    rvUsers.visibility = View.GONE
-                }
+                layoutFriends.visibility =
+                    if (layoutFriends.visibility == View.GONE) View.VISIBLE else View.GONE
+                rvUsers.visibility = layoutFriends.visibility
+                tvEmptyFriend.visibility = View.GONE
             } else {
                 layoutFriends.visibility = View.VISIBLE
                 rvUsers.visibility = View.GONE
@@ -133,37 +118,45 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun loadUsersFromFirebase() {
-        val dbRef = FirebaseDatabase.getInstance().getReference("users")
-        dbRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                userList.clear()
-                for (data in snapshot.children) {
-                    val user = data.getValue(User::class.java)
-                    if (user != null) userList.add(user)
+        FirebaseDatabase.getInstance().getReference("users")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    userList.clear()
+                    for (data in snapshot.children) {
+                        val user = data.getValue(User::class.java)
+                        if (user != null) userList.add(user)
+                    }
+                    userAdapter.notifyDataSetChanged()
                 }
-                Log.d("MenuActivity", "userList size: ${userList.size}")
-                userAdapter.notifyDataSetChanged()
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@MenuActivity, "Gagal load user", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@MenuActivity, "Gagal load user", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     private fun hasCameraPermission() =
-        ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED
 
     private fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST)
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.CAMERA),
+            CAMERA_PERMISSION_REQUEST
+        )
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CAMERA_PERMISSION_REQUEST && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == CAMERA_PERMISSION_REQUEST &&
+            grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
             startCamera()
-        } else {
-            Toast.makeText(this, "Camera permission diperlukan", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -172,56 +165,87 @@ class MenuActivity : AppCompatActivity() {
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
 
-            val preview = Preview.Builder().build().also { it.setSurfaceProvider(previewCamera.surfaceProvider) }
+            val preview = Preview.Builder().build()
+                .also { it.setSurfaceProvider(previewCamera.surfaceProvider) }
 
             imageCapture = ImageCapture.Builder()
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .build()
 
-            val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(lensFacing)
+                .build()
 
-            try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "Gagal menyalakan kamera", Toast.LENGTH_SHORT).show()
-            }
+            cameraProvider.unbindAll()
+            cameraProvider.bindToLifecycle(
+                this,
+                cameraSelector,
+                preview,
+                imageCapture
+            )
         }, ContextCompat.getMainExecutor(this))
     }
 
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
-        val photoFile = File(externalMediaDirs.firstOrNull() ?: filesDir, "photo_${System.currentTimeMillis()}.jpg")
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-        imageCapture.takePicture(outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                MediaScannerConnection.scanFile(this@MenuActivity, arrayOf(photoFile.absolutePath), arrayOf("image/jpeg")) { _, _ ->
+        val photoFile = File(
+            externalMediaDirs.firstOrNull() ?: filesDir,
+            "photo_${System.currentTimeMillis()}.jpg"
+        )
+
+        val outputOptions =
+            ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+        imageCapture.takePicture(
+            outputOptions,
+            cameraExecutor,
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+
+                    MediaScannerConnection.scanFile(
+                        this@MenuActivity,
+                        arrayOf(photoFile.absolutePath),
+                        arrayOf("image/jpeg"),
+                        null
+                    )
+
+                    val imageUri = Uri.fromFile(photoFile)
+
                     runOnUiThread {
-                        Toast.makeText(this@MenuActivity, "Foto tersimpan di galeri", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@MenuActivity, PreviewActivity::class.java)
-                        intent.putExtra("photo_path", photoFile.absolutePath)
+                        intent.putExtra("image_uri", imageUri.toString()) // ✅ FIX
                         startActivity(intent)
                     }
                 }
-            }
 
-            override fun onError(exception: ImageCaptureException) {
-                runOnUiThread {
-                    Toast.makeText(this@MenuActivity, "Gagal mengambil foto", Toast.LENGTH_SHORT).show()
+                override fun onError(exception: ImageCaptureException) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MenuActivity,
+                            "Gagal mengambil foto",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-                exception.printStackTrace()
-            }
-        })
+            })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val selectedImageUri: Uri? = data?.data
-            if (selectedImageUri != null) {
-                Toast.makeText(this, "Foto dipilih: $selectedImageUri", Toast.LENGTH_SHORT).show()
+
+        if (requestCode == GALLERY_REQUEST_CODE &&
+            resultCode == Activity.RESULT_OK
+        ) {
+            val imageUri: Uri? = data?.data
+            if (imageUri != null) {
+                val intent = Intent(this, PreviewActivity::class.java)
+                intent.putExtra("image_uri", imageUri.toString())
+                startActivity(intent)
             }
         }
     }
