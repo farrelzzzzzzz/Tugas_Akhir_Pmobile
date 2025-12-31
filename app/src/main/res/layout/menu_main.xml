@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <!-- CardView untuk rounded corner + border putih -->
         <androidx.cardview.widget.CardView
             android:layout_width="324dp"
             android:layout_height="296dp"
@@ -35,16 +34,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
+        android:paddingTop="16dp">
 
         <!-- PROFILE -->
         <ImageView
             android:id="@+id/btnProfile"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_margin="16dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/icon_profile"
             android:tint="#FFFFFF" />
 
@@ -53,33 +52,38 @@
             android:id="@+id/btnChat"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_margin="16dp"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_chat"
             android:tint="#FFFFFF" />
 
         <!-- EVERYONE -->
         <TextView
             android:id="@+id/btnEveryone"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
+            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
-            android:text="Everyone"
-            android:textColor="#FDCF00"
+            android:layout_alignTop="@id/btnProfile"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:background="@drawable/icon_everyone"
             android:paddingHorizontal="20dp"
             android:paddingVertical="8dp"
-            android:background="@drawable/icon_everyone"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp" />
+            android:text="Everyone"
+            android:textColor="#FDCF00"
+            android:gravity="center" />
 
-        <!-- FRIEND LIST -->
+
+        <!-- FRIEND LIST POPUP -->
         <LinearLayout
             android:id="@+id/layoutFriends"
-            android:layout_width="260dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnEveryone"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/bg_popup"
             android:orientation="vertical"
             android:padding="12dp"
@@ -93,6 +97,12 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUsers"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:padding="4dp" />
+
             <TextView
                 android:id="@+id/tvEmptyFriend"
                 android:layout_width="match_parent"
@@ -100,7 +110,8 @@
                 android:text="Belum ada teman"
                 android:textColor="#AAAAAA"
                 android:gravity="center"
-                android:layout_marginVertical="12dp" />
+                android:layout_marginTop="8dp" />
+
         </LinearLayout>
 
         <!-- BOTTOM CONTROLS -->
@@ -133,7 +144,9 @@
                 android:layout_marginStart="40dp"
                 android:src="@drawable/icon_switch"
                 android:tint="#FFFFFF" />
+
         </LinearLayout>
 
     </RelativeLayout>
+
 </FrameLayout>
