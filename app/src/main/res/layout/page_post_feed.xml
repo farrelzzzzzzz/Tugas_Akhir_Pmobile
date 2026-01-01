@@ -1,0 +1,102 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/overlayLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_all">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- RecyclerView horizontal -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPostHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="24dp"
+            android:overScrollMode="never"/>
+
+        <!-- Tombol overlay -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp"
+            android:clickable="false"
+            android:focusable="false">
+
+            <!-- PROFILE -->
+            <ImageView
+                android:id="@+id/btnProfile"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/icon_profile"
+                android:tint="#FFFFFF" />
+
+            <!-- CHAT -->
+            <ImageView
+                android:id="@+id/btnChat"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_chat"
+                android:tint="#FFFFFF" />
+
+            <!-- EVERYONE -->
+            <TextView
+                android:id="@+id/btnEveryone"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/icon_everyone"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="8dp"
+                android:text="Everyone"
+                android:textColor="#FDCF00"
+                android:gravity="center" />
+
+            <!-- FRIEND LIST POPUP -->
+            <LinearLayout
+                android:id="@+id/layoutFriendsPost"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnEveryone"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_popup"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Friends"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvUsers"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:padding="4dp" />
+
+                <TextView
+                    android:id="@+id/tvEmptyFriend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Belum ada teman"
+                    android:textColor="#AAAAAA"
+                    android:gravity="center"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </FrameLayout>
+</FrameLayout>

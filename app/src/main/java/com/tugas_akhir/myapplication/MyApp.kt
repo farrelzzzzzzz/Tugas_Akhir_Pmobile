@@ -2,7 +2,7 @@ package com.tugas_akhir.myapplication
 
 import android.app.Application
 import com.cloudinary.android.MediaManager
-
+//db cloudinary gambar
 class MyApp : Application() {
 
     override fun onCreate() {

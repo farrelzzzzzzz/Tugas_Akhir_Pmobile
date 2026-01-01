@@ -1,7 +1,12 @@
+
+
 package com.tugas_akhir.myapplication
 
 data class User(
-    val uid: String = "",
-    val username: String = "",
-    val photoUrl: String = ""
+    var uid: String = "",
+    var username: String = "",
+    var photoUrl: String = ""
 )
+
+
+

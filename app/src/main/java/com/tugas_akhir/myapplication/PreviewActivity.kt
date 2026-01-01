@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.cloudinary.android.MediaManager
-import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -15,6 +14,7 @@ class PreviewActivity : AppCompatActivity() {
 
     private lateinit var imgPreview: ImageView
     private lateinit var btnUpload: Button
+
     private lateinit var btnCancelUpload: Button
     private lateinit var btnBack: ImageView
     private lateinit var progressOverlay: FrameLayout
@@ -34,86 +34,63 @@ class PreviewActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.btnBack)
         progressOverlay = findViewById(R.id.progressOverlay)
 
-        intent.getStringExtra("image_uri")?.let {
-            imageUri = Uri.parse(it)
-            imgPreview.setImageURI(imageUri)
+        imageUri = intent.getStringExtra("image_uri")?.let { Uri.parse(it) }
+        imgPreview.setImageURI(imageUri)
+
+        btnUpload.setOnClickListener { uploadImage() }
+
+        // ===== BATAL UPLOAD =====
+        btnCancelUpload.setOnClickListener {
+            finish() // langsung kembali ke MenuActivity
         }
 
-        btnUpload.setOnClickListener { uploadPostImage() }
-        btnCancelUpload.setOnClickListener { finish() }
-        btnBack.setOnClickListener { finish() }
+        // ===== BACK BUTTON =====
+        btnBack.setOnClickListener {
+            finish() // back ke MenuActivity juga
+        }
     }
 
-    private fun uploadPostImage() {
-
-        val uid = auth.currentUser?.uid
-        if (uid == null || imageUri == null) {
-            Toast.makeText(this, "User / gambar tidak valid", Toast.LENGTH_SHORT).show()
-            return
-        }
+    private fun uploadImage() {
+        val uid = auth.currentUser?.uid ?: return
+        val uri = imageUri ?: return
 
         progressOverlay.visibility = View.VISIBLE
 
-        // 🔥 SAMA PERSIS DENGAN EDIT PROFILE
         MediaManager.get()
-            .upload(imageUri)
+            .upload(uri)
             .option("folder", "users/$uid/posts")
             .callback(object : UploadCallback {
+                override fun onSuccess(requestId: String?, resultData: Map<*, *>?) {
+                    val imageUrl = resultData?.get("secure_url").toString()
+                    savePost(uid, imageUrl)
+                }
+
+                override fun onError(requestId: String?, error: com.cloudinary.android.callback.ErrorInfo?) {
+                    progressOverlay.visibility = View.GONE
+                }
 
                 override fun onStart(requestId: String?) {}
-
-                override fun onProgress(
-                    requestId: String?,
-                    bytes: Long,
-                    totalBytes: Long
-                ) {}
-
-                override fun onSuccess(
-                    requestId: String?,
-                    resultData: Map<*, *>?
-                ) {
-                    val imageUrl = resultData?.get("secure_url").toString()
-                    val publicId = resultData?.get("public_id").toString()
-                    savePost(uid, imageUrl, publicId)
-                }
-
-                override fun onError(
-                    requestId: String?,
-                    error: ErrorInfo?
-                ) {
-                    progressOverlay.visibility = View.GONE
-                    Toast.makeText(
-                        this@PreviewActivity,
-                        error?.description ?: "Upload gagal",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onReschedule(requestId: String?, error: ErrorInfo?) {}
+                override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {}
+                override fun onReschedule(requestId: String?, error: com.cloudinary.android.callback.ErrorInfo?) {}
             })
             .dispatch()
     }
 
-    private fun savePost(uid: String, imageUrl: String, publicId: String) {
+    private fun savePost(uid: String, imageUrl: String) {
+        val postId = db.child("posts").push().key ?: return
 
-        val postRef = db.child("users").child(uid).child("posts")
-        val postId = postRef.push().key ?: return
-
-        val data = hashMapOf(
+        val data = mapOf(
+            "postId" to postId,
             "imageUrl" to imageUrl,
-            "publicId" to publicId,
+            "userId" to uid,
             "timestamp" to System.currentTimeMillis()
         )
 
-        postRef.child(postId).setValue(data)
+        db.child("posts").child(postId).setValue(data)
+        db.child("users").child(uid).child("posts").child(postId).setValue(data)
             .addOnSuccessListener {
                 progressOverlay.visibility = View.GONE
-                Toast.makeText(this, "Postingan berhasil diupload", Toast.LENGTH_SHORT).show()
                 finish()
-            }
-            .addOnFailureListener {
-                progressOverlay.visibility = View.GONE
-                Toast.makeText(this, "Gagal menyimpan postingan", Toast.LENGTH_SHORT).show()
             }
     }
 }

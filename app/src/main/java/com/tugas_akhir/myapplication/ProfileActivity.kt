@@ -19,6 +19,9 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageView
     private lateinit var btnBuatPostingan: Button
 
+    private lateinit var btnEditProfile: LinearLayout
+
+
     private lateinit var rvPost: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private val postList = ArrayList<Post>()
@@ -45,6 +48,13 @@ class ProfileActivity : AppCompatActivity() {
         imgProfile = findViewById(R.id.imgProfile)
         btnBack = findViewById(R.id.btnBack)
         btnBuatPostingan = findViewById(R.id.btnBuatPostingan)
+
+        btnEditProfile = findViewById(R.id.btnEditProfile)
+
+        btnEditProfile.setOnClickListener {
+            startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+
 
         rvPost = findViewById(R.id.rvPost)
         rvPost.layoutManager = GridLayoutManager(this, 3)

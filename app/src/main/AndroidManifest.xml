@@ -66,6 +66,11 @@
         <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
+        <!-- Scroll menu -->
+        <activity
+            android:name=".PostScrolActivity"
+            android:exported="false" />
+
 
     </application>
 

@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-
+//list user menu utama
 class AdapterRecyclerView(
     private val userList: List<User>
 ) : RecyclerView.Adapter<AdapterRecyclerView.UserViewHolder>() {
