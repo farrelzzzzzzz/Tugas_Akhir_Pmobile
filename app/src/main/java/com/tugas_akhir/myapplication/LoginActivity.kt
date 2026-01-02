@@ -25,9 +25,7 @@ class LoginActivity : BaseActivity() {
         val btnLogin = findViewById<AppCompatButton>(R.id.btnLogin)
         val btnSignIn = findViewById<AppCompatButton>(R.id.btnSignIn)
 
-        // ===============================
-        // 🔐 FITUR HINT DINAMIS PASSWORD
-        // ===============================
+       
         val passwordHint = "Masukkan kata sandi anda"
         edPassword.hint = passwordHint
 
@@ -38,9 +36,7 @@ class LoginActivity : BaseActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
-        // ===============================
-
-        // 🔑 TOMBOL LOGIN (CEK KE FIREBASE)
+        
         btnLogin.setOnClickListener {
             val email = edUsername.text.toString().trim()
             val password = edPassword.text.toString().trim()
@@ -55,7 +51,6 @@ class LoginActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            // 🔐 LOGIN FIREBASE AUTH
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -81,7 +76,6 @@ class LoginActivity : BaseActivity() {
                 }
         }
 
-        // TOMBOL SIGN IN
         btnSignIn.setOnClickListener {
             startActivity(Intent(this, SignActivity::class.java))
         }
