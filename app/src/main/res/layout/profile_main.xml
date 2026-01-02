@@ -76,7 +76,6 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- EDIT PROFILE -->
-    <!-- EDIT PROFILE -->
     <LinearLayout
         android:id="@+id/btnEditProfile"
         android:layout_width="wrap_content"
@@ -103,7 +102,7 @@
     </LinearLayout>
 
 
-    <!-- DIVIDER -->
+   
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
@@ -114,7 +113,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 🔥 GRID POSTINGAN -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPost"
         android:layout_width="0dp"
