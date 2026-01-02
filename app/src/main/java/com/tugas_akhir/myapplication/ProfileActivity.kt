@@ -134,11 +134,7 @@ class ProfileActivity : AppCompatActivity() {
             .show()
     }
 
-    /**
-     * 🔥 DELETE YANG BENAR
-     * ❌ JANGAN delete Cloudinary di Android
-     * ✅ DELETE FIREBASE SAJA
-     */
+
     private fun deletePost(post: Post) {
         postRef.child(post.postId)
             .removeValue()
