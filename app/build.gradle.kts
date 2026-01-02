@@ -59,9 +59,12 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.2")
 
     // Firebase
+    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+
 
     // ✅ Cloudinary (STABIL)
     implementation("com.cloudinary:cloudinary-android:2.2.0")
@@ -69,6 +72,7 @@ dependencies {
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
     kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     // UI

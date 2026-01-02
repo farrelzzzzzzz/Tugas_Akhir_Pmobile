@@ -35,13 +35,16 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.profile_main)
 
         auth = FirebaseAuth.getInstance()
-        val uid = auth.currentUser?.uid ?: return
+        val profileUid = intent.getStringExtra("USER_ID")
+            ?: auth.currentUser?.uid
+            ?: return
+
 
         userRef = FirebaseDatabase.getInstance()
-            .reference.child("users").child(uid)
+            .reference.child("users").child(profileUid)
 
         postRef = FirebaseDatabase.getInstance()
-            .reference.child("users").child(uid).child("posts")
+            .reference.child("users").child(profileUid).child("posts")
 
         tvUsername = findViewById(R.id.tvUsername)
         tvBio = findViewById(R.id.tvBio)

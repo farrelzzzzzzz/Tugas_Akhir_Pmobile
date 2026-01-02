@@ -1,13 +1,12 @@
 package com.tugas_akhir.myapplication
 
-import HorizontalSpaceItemDecoration
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.view.MotionEvent
+import android.media.MediaScannerConnection
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -17,17 +16,19 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.*
+import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+
+
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import android.media.MediaScannerConnection
-import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class MenuActivity : AppCompatActivity() {
 
@@ -51,6 +52,7 @@ class MenuActivity : AppCompatActivity() {
     private lateinit var tvEmptyFriend: TextView
     private val userList = mutableListOf<User>()
     private lateinit var userAdapter: AdapterRecyclerView
+    private val storage = FirebaseStorage.getInstance()
 
     // ===== POST =====
     private val postList = mutableListOf<Post>()
@@ -73,7 +75,6 @@ class MenuActivity : AppCompatActivity() {
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
         viewPager = findViewById(R.id.viewPagerPosts)
         setupViewPager(viewPager)
 
@@ -121,6 +122,20 @@ class MenuActivity : AppCompatActivity() {
                         arrayOf("image/jpeg"),
                         null
                     )
+
+                    // Upload ke Firebase Storage
+                    val storageRef = FirebaseStorage.getInstance()
+                        .reference.child("posts/${file.name}")
+                    storageRef.putFile(Uri.fromFile(file)).addOnSuccessListener {
+                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+                            val uid = FirebaseAuth.getInstance().currentUser!!.uid
+                            val postRef = FirebaseDatabase.getInstance()
+                                .getReference("users/$uid/posts").push()
+                            postRef.setValue(
+                                Post(uri.toString(), uid, System.currentTimeMillis(), postRef.key ?: "")
+                            )
+                        }
+                    }
 
                     runOnUiThread {
                         startActivity(
@@ -210,7 +225,6 @@ class MenuActivity : AppCompatActivity() {
                 if (holder is PostHolder) holder.bind(postList)
             }
 
-            // ===== CAMERA PAGE =====
             inner class CameraHolder(v: View) : RecyclerView.ViewHolder(v) {
                 init {
                     previewCamera = v.findViewById(R.id.previewCamera)
@@ -225,7 +239,11 @@ class MenuActivity : AppCompatActivity() {
                     tvEmptyFriend = v.findViewById(R.id.tvEmptyFriend)
 
                     rvUsers.layoutManager = LinearLayoutManager(this@MenuActivity)
-                    userAdapter = AdapterRecyclerView(userList)
+                    userAdapter = AdapterRecyclerView(userList) { user ->
+                        // Klik teman langsung buka profilnya
+                        startActivity(Intent(this@MenuActivity, ProfileActivity::class.java)
+                            .putExtra("uid", user.uid))
+                    }
                     rvUsers.adapter = userAdapter
 
                     btnGallery.setOnClickListener {
@@ -245,9 +263,7 @@ class MenuActivity : AppCompatActivity() {
                     btnShutter.setOnClickListener { takePhoto() }
 
                     btnEveryone.setOnClickListener {
-                        // Toggle visibilitas layoutFriends dengan daftar teman
-                        if (layoutFriends.visibility == View.GONE) {
-                            layoutFriends.visibility = View.VISIBLE
+                        layoutFriends.visibility = if (layoutFriends.visibility == View.GONE) {
                             if (userList.isEmpty()) {
                                 tvEmptyFriend.visibility = View.VISIBLE
                                 rvUsers.visibility = View.GONE
@@ -255,9 +271,8 @@ class MenuActivity : AppCompatActivity() {
                                 tvEmptyFriend.visibility = View.GONE
                                 rvUsers.visibility = View.VISIBLE
                             }
-                        } else {
-                            layoutFriends.visibility = View.GONE
-                        }
+                            View.VISIBLE
+                        } else View.GONE
                     }
 
                     btnProfile.setOnClickListener {
@@ -268,15 +283,11 @@ class MenuActivity : AppCompatActivity() {
                 }
             }
 
-            // ===== POST PAGE =====
             inner class PostHolder(v: View) : RecyclerView.ViewHolder(v) {
                 private val rvPost: RecyclerView = v.findViewById(R.id.rvPostHorizontal)
                 private val overlay: FrameLayout = v.findViewById(R.id.overlayLayout)
-
                 private val btnProfile: ImageView = v.findViewById(R.id.btnProfile)
                 private val btnEveryone: TextView = v.findViewById(R.id.btnEveryone)
-
-                // Layout teman khusus PostHolder
                 private val layoutFriendsPost: View = v.findViewById(R.id.layoutFriendsPost)
                 private val rvUsersPost: RecyclerView = v.findViewById(R.id.rvUsers)
                 private val tvEmptyFriendPost: TextView = v.findViewById(R.id.tvEmptyFriend)
@@ -286,7 +297,6 @@ class MenuActivity : AppCompatActivity() {
                         postAdapter = PostHorizontalAdapter(posts)
                         rvPost.layoutManager = LinearLayoutManager(this@MenuActivity, LinearLayoutManager.HORIZONTAL, false)
                         rvPost.adapter = postAdapter
-
                         val snapHelper = PagerSnapHelper()
                         snapHelper.attachToRecyclerView(rvPost)
 
@@ -299,34 +309,21 @@ class MenuActivity : AppCompatActivity() {
                         rvPost.clipToPadding = false
                     }
 
-                    // RecyclerView teman di Post
                     rvUsersPost.layoutManager = LinearLayoutManager(this@MenuActivity)
-                    val adapterPost = AdapterRecyclerView(userList)
-                    rvUsersPost.adapter = adapterPost
-
-                    // Touch handling overlay
-                    rvPost.setOnTouchListener { view, event ->
-                        val overlayLocation = IntArray(2)
-                        overlay.getLocationOnScreen(overlayLocation)
-                        val x = event.rawX.toInt()
-                        val y = event.rawY.toInt()
-                        val rect = android.graphics.Rect(
-                            overlayLocation[0],
-                            overlayLocation[1],
-                            overlayLocation[0] + overlay.width,
-                            overlayLocation[1] + overlay.height
-                        )
-                        if (rect.contains(x, y)) {
-                            false
-                        } else {
-                            view.onTouchEvent(event)
-                        }
+                    rvUsersPost.adapter = AdapterRecyclerView(userList) { user ->
+                        startActivity(Intent(this@MenuActivity, ProfileActivity::class.java)
+                            .putExtra("uid", user.uid))
                     }
 
-                    // Tombol Everyone
+                    rvPost.setOnTouchListener { view, event ->
+                        val loc = IntArray(2)
+                        overlay.getLocationOnScreen(loc)
+                        val rect = android.graphics.Rect(loc[0], loc[1], loc[0]+overlay.width, loc[1]+overlay.height)
+                        if (rect.contains(event.rawX.toInt(), event.rawY.toInt())) false else view.onTouchEvent(event)
+                    }
+
                     btnEveryone.setOnClickListener {
-                        if (layoutFriendsPost.visibility == View.GONE) {
-                            layoutFriendsPost.visibility = View.VISIBLE
+                        layoutFriendsPost.visibility = if (layoutFriendsPost.visibility == View.GONE) {
                             if (userList.isEmpty()) {
                                 tvEmptyFriendPost.visibility = View.VISIBLE
                                 rvUsersPost.visibility = View.GONE
@@ -334,18 +331,15 @@ class MenuActivity : AppCompatActivity() {
                                 tvEmptyFriendPost.visibility = View.GONE
                                 rvUsersPost.visibility = View.VISIBLE
                             }
-                        } else {
-                            layoutFriendsPost.visibility = View.GONE
-                        }
+                            View.VISIBLE
+                        } else View.GONE
                     }
 
-                    // Tombol Profile
                     btnProfile.setOnClickListener {
                         startActivity(Intent(this@MenuActivity, ProfileActivity::class.java))
                     }
                 }
             }
-
         }
 
         viewPager.offscreenPageLimit = 2
@@ -356,7 +350,6 @@ class MenuActivity : AppCompatActivity() {
         })
     }
 
-    // ===== POST HORIZONTAL ADAPTER =====
     inner class PostHorizontalAdapter(private val posts: List<Post>) :
         RecyclerView.Adapter<PostHorizontalAdapter.PostViewHolder>() {
 
@@ -365,10 +358,8 @@ class MenuActivity : AppCompatActivity() {
             val tvDate: TextView = view.findViewById(R.id.tvDate)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-            val view = layoutInflater.inflate(R.layout.item_post_horizontal, parent, false)
-            return PostViewHolder(view)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            PostViewHolder(layoutInflater.inflate(R.layout.item_post_horizontal, parent, false))
 
         override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
             val post = posts[position]
