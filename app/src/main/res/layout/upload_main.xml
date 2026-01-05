@@ -48,7 +48,7 @@
             android:textColor="#0E1B5C"
             android:background="@drawable/up_buttselector"/>
 
-        <!-- BATAL UPLOAD (TAMBAHAN SAJA) -->
+
         <Button
             android:id="@+id/btnCancelUpload"
             android:layout_width="match_parent"
