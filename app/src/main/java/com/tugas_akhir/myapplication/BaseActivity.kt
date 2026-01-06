@@ -9,7 +9,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // ⛔ MATIKAN EDGE-TO-EDGE ANDROID 15
+
         WindowCompat.setDecorFitsSystemWindows(window, true)
     }
 }

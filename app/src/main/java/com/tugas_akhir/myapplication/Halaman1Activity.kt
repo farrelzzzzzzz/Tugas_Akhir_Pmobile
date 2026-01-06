@@ -10,13 +10,13 @@ class Halaman1Activity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Sesuai nama XML
+
         setContentView(R.layout.halaman1_main)
 
         val btnStart = findViewById<LinearLayout>(R.id.btnStart)
 
         btnStart.setOnClickListener {
-            // Pindah ke halaman berikutnya
+
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }

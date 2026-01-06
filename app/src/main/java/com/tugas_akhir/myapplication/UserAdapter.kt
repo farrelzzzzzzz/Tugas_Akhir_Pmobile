@@ -14,7 +14,7 @@ class UserAdapter(
 
     inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        // NULL-SAFE (ANTI CRASH)
+
         val tvName: TextView? = view.findViewById(R.id.tvUsername)
         val imgUser: ImageView? = view.findViewById(R.id.imgUser)
 
@@ -32,10 +32,10 @@ class UserAdapter(
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = userList[position]
 
-        // SET NAMA USER (AMAN)
+
         holder.tvName?.text = user.username
 
-        // LOAD FOTO USER (AMAN)
+
         holder.imgUser?.let { imageView ->
             Glide.with(imageView.context)
                 .load(user.photoUrl)
